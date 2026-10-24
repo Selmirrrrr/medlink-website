@@ -1,0 +1,123 @@
+---
+import { themes, url } from "../routes.mjs";
+import type { PageProps, ProductId } from "../types";
+interface Props extends PageProps {
+  page: ProductId;
+}
+import Icon from "./Icon.astro";
+import Visual from "./Visual.astro";
+import Stats from "./Stats.astro";
+import CTA from "./CTA.astro";
+import SolutionCards from "./SolutionCards.astro";
+const { t, lang, page } = Astro.props;
+const p = t.products[page];
+const theme = themes[page];
+---
+
+<div
+  class="product-page"
+  style={`--accent:${theme.color};--pale:${theme.pale};--accent-light:${theme.light}`}
+>
+  <section class="product-hero">
+    <div class="hero-orbit" aria-hidden="true"></div>
+    <div class="container">
+      <nav class="breadcrumbs" aria-label={t.nav.solutions}>
+        <a href={url(lang)}>{t.nav.home}</a>
+        <span>/</span>
+        <a href={`${url(lang)}#solutions`}>{t.nav.solutions}</a>
+        <span>/</span>
+        <span>{p.name}</span>
+      </nav>
+      <div class="product-intro">
+        <div>
+          <span class="eyebrow product-eyebrow">
+            <Icon name={theme.icon} size={17} />
+            {p.name} · {p.category}
+          </span>
+          <h1>
+            {p.title}
+            <br />
+            <span>{p.accent}</span>
+          </h1>
+          <p>{p.intro}</p>
+          <a
+            class="button button-product"
+            href={`${url(lang, "contact")}?interest=${page}#demo`}
+          >
+            {t.nav.demo}
+            <Icon size={18} />
+          </a>
+        </div>
+        <aside class="product-promise">
+          <span class="eyebrow">{p.category}</span>
+          <p>{p.promise}</p>
+        </aside>
+      </div>
+      <div class="product-showcase">
+        <Visual type={page} t={t} />
+      </div>
+      <p class="example-caption">{t.common.example}</p>
+    </div>
+  </section>
+  <section class="section challenges-section">
+    <div class="container">
+      <span class="eyebrow">{t.common.challenges}</span>
+      <div class="challenges-grid">
+        {p.challenges.map(([title, body]) => (
+          <article>
+            <h2>{title}</h2>
+            <p>
+              <span aria-hidden="true">›</span>
+              {body}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="benefits-section section">
+    <div class="container">
+      <div class="section-heading">
+        <h2>{t.common.benefits}</h2>
+        <span class="eyebrow">{p.name}</span>
+      </div>
+      <div
+        class:list={[
+          "benefits-grid",
+          { "four-columns": p.benefits.length === 4 },
+        ]}
+      >
+        {p.benefits.map(([title, body], i) => (
+          <article>
+            <span class="benefit-number">0{i + 1}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+      {p.assurances && (
+        <div class="assurance-grid">
+          {p.assurances.map(([title, body], i) => (
+            <article>
+              <Icon name={["check", "globe", "shield"][i]} />
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+  <Stats
+    t={t}
+    metric={
+      page === "factoring"
+        ? "billed"
+        : ["planning", "team", "cockpit"].includes(page)
+          ? "visits"
+          : undefined
+    }
+  />
+  <CTA t={t} lang={lang} />
+  <SolutionCards t={t} lang={lang} exclude={page} filter={false} />
+</div>

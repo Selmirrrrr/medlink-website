@@ -1,0 +1,77 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps, ProductId } from "../types";
+interface Props extends PageProps {
+  filter?: boolean;
+  exclude?: ProductId;
+}
+import Visual from "./Visual.astro";
+import { productIds, themes, url } from "../routes.mjs";
+const { t, lang, filter = true, exclude } = Astro.props;
+const ids = productIds.filter((id) => id !== exclude);
+---
+
+<section class="solutions-section section" id="solutions">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">{t.solutions.eyebrow}</span>
+        <h2>{exclude ? t.common.related : t.solutions.title}</h2>
+      </div>
+      <p>{t.solutions.text}</p>
+    </div>
+    {filter && (
+      <div
+        class="solution-filters"
+        role="group"
+        aria-label={t.nav.solutions}
+        hidden
+      >
+        {t.solutions.groups.map((label, i) => (
+          <button
+            data-filter={["all", "care", "management"][i]}
+            aria-pressed={i === 0}
+          >
+            {label}
+            {i === 0 && <span>6</span>}
+          </button>
+        ))}
+      </div>
+    )}
+    <div class="solution-grid">
+      {ids.map((id) => (
+        <article
+          class="solution-card"
+          data-category={
+            ["care", "scribe"].includes(id) ? "care" : "management"
+          }
+          style={`--accent:${themes[id].color};--pale:${themes[id].pale};--accent-light:${themes[id].light}`}
+        >
+          <a
+            href={url(lang, id)}
+            aria-label={`${t.solutions.link} — ${t.products[id].name}`}
+          >
+            <div class="card-top">
+              <span class="icon-tile">
+                <Icon name={themes[id].icon} />
+              </span>
+              <span class="card-category">{t.products[id].category}</span>
+              {id === "scribe" && <span class="new-badge">{t.common.new}</span>}
+            </div>
+            <h3>{t.products[id].name}</h3>
+            <p>{t.products[id].short}</p>
+            <div class="card-art" aria-hidden="true">
+              <Visual type={id} t={t} compact />
+            </div>
+            <div class="card-link">
+              <span>{t.common.discover}</span>
+              <span class="circle-arrow">
+                <Icon size={18} />
+              </span>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

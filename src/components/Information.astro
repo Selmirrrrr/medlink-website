@@ -1,0 +1,117 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps } from "../types";
+interface Props extends PageProps {
+  page: "about" | "platform";
+}
+import Visual from "./Visual.astro";
+import Stats from "./Stats.astro";
+import SolutionCards from "./SolutionCards.astro";
+import CTA from "./CTA.astro";
+import { url } from "../routes.mjs";
+const { t, lang, page } = Astro.props;
+const p = t[page];
+---
+
+<section class="information-hero">
+  <div class="container">
+    <span class="eyebrow">{p.eyebrow}</span>
+    <h1>
+      {p.title}
+      <br />
+      <span>{p.accent}</span>
+    </h1>
+    <p>{p.text}</p>
+    <a class="button button-coral" href={url(lang, "contact")}>
+      {t.nav.demo}
+      <Icon size={18} />
+    </a>
+  </div>
+  <div class="hero-orbit" aria-hidden="true"></div>
+</section>
+{page === "about" ? (
+  <>
+    <section class="section">
+      <div class="container about-grid">
+        <div class="about-photo">
+          <img
+            src="/assets/nyon.webp"
+            alt={t.swiss.photo}
+            width="1000"
+            height="665"
+          />
+          <span class="about-photo-label">
+            <span class="swiss-cross" aria-hidden="true">
+              +
+            </span>
+            Nyon · Zürich · Sion
+          </span>
+        </div>
+        <div>
+          <span class="eyebrow">Medical Link Services SA</span>
+          <h2>{p.heading}</h2>
+          {t.about.paragraphs.map((text) => (
+            <p>{text}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="values-section">
+      <div class="container values-grid">
+        {t.about.values.map(([title, body], i) => (
+          <article>
+            <span>0{i + 1}</span>
+            <h2>{title}</h2>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+    <Stats t={t} />
+    <section class="quote-section section">
+      <div class="container">
+        <span aria-hidden="true">“</span>
+        <blockquote>{t.about.quote}</blockquote>
+        <p>
+          <strong>Jihad Fahmé</strong> · CEO, Medical Link Services SA
+        </p>
+      </div>
+    </section>
+  </>
+) : (
+  <>
+    <section class="section">
+      <div class="container platform-grid">
+        <div>
+          <span class="eyebrow">MedLink</span>
+          <h2>{p.heading}</h2>
+          <p>{t.platform.body}</p>
+          <ul class="check-list">
+            {t.hero.trust.map((text) => (
+              <li>
+                <Icon name="check" size={18} />
+                {text}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Visual t={t} />
+      </div>
+    </section>
+    <section class="platform-features section">
+      <div class="container feature-grid">
+        {t.platform.features.map(([title, body], i) => (
+          <article>
+            <span class="icon-tile">
+              <Icon name={["globe", "shield", "link", "users"][i]} />
+            </span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+    <SolutionCards t={t} lang={lang} />
+  </>
+)}
+<CTA t={t} lang={lang} />

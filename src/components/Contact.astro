@@ -1,0 +1,193 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps } from "../types";
+interface Props extends PageProps {}
+import { productIds } from "../routes.mjs";
+const { t, lang } = Astro.props;
+const c = t.contact;
+---
+
+<section class="contact-section">
+  <div class="container contact-grid">
+    <div class="contact-copy">
+      <span class="eyebrow">{c.eyebrow}</span>
+      <h1>
+        {c.title}
+        <br />
+        <span>{c.accent}</span>
+      </h1>
+      <p class="contact-intro">{c.text}</p>
+      <div class="contact-details">
+        <h2>{c.direct}</h2>
+        <a href="mailto:info@med-link.org">
+          <span class="icon-tile">
+            <Icon name="mail" />
+          </span>
+          <span>
+            info@med-link.org<small>{t.nav.contact}</small>
+          </span>
+          <Icon name="diagonal" size={18} />
+        </a>
+        <a href="tel:+41223623400">
+          <span class="icon-tile">
+            <Icon name="phone" />
+          </span>
+          <span>
+            022 362 34 00<small>Français</small>
+          </span>
+        </a>
+        <a href="tel:0800633546">
+          <span class="icon-tile">
+            <Icon name="phone" />
+          </span>
+          <span>
+            0800 633 546<small>Deutsch · CH</small>
+          </span>
+        </a>
+        <div class="address-block">
+          <Icon name="pin" />
+          <span>
+            <strong>{c.address}</strong>
+            <br />
+            Medical Link Services SA
+            <br />
+            Chemin de Chantavril 2<br />
+            1260 Nyon,{" "}
+            {
+              {
+                fr: "Suisse",
+                de: "Schweiz",
+                it: "Svizzera",
+                en: "Switzerland",
+              }[lang]
+            }
+          </span>
+        </div>
+      </div>
+      <div class="contact-swiss">
+        <span class="swiss-cross" aria-hidden="true">
+          +
+        </span>
+        Nyon · Zürich · Sion
+      </div>
+    </div>
+    <div class="contact-form-card" id="demo">
+      <h2>{c.formTitle}</h2>
+      <p class="form-required">* {c.required}</p>
+      <form
+        id="contact-form"
+        data-subject={c.subject}
+        data-ready={c.ready}
+        data-copied={c.copied}
+        data-copy-error={c.copyError}
+      >
+        <div class="form-grid">
+          <label>
+            {c.name} *
+            <input
+              type="text"
+              name="name"
+              autocomplete="name"
+              required
+              maxlength="120"
+              data-label={c.name}
+            />
+          </label>
+          <label>
+            {c.company} *
+            <input
+              type="text"
+              name="company"
+              autocomplete="organization"
+              required
+              maxlength="180"
+              data-label={c.company}
+            />
+          </label>
+          <label>
+            {c.email} *
+            <input
+              type="email"
+              name="email"
+              autocomplete="email"
+              required
+              maxlength="254"
+              data-label={c.email}
+            />
+          </label>
+          <label>
+            {c.phone} <span>({t.common.optional})</span>
+            <input
+              type="tel"
+              name="phone"
+              autocomplete="tel"
+              maxlength="40"
+              data-label={c.phone}
+            />
+          </label>
+          <label class="full-width">
+            {c.interest}
+            <select name="interest" data-label={c.interest}>
+              <option value="platform">{c.choose}</option>
+              {productIds.map((id) => (
+                <option value={id}>{t.products[id].name}</option>
+              ))}
+            </select>
+          </label>
+          <label class="full-width">
+            {c.message} *
+            <textarea
+              name="message"
+              rows="5"
+              required
+              maxlength="3000"
+              placeholder={c.placeholder}
+              data-label={c.message}
+            ></textarea>
+          </label>
+        </div>
+        <p class="form-note">
+          <Icon name="shield" size={16} />
+          {c.privacy}
+        </p>
+        <button class="button button-navy form-submit" type="submit">
+          {c.submit}
+          <Icon name="mail" size={18} />
+        </button>
+        <p class="form-notice">{c.notice}</p>
+      </form>
+      <div class="form-result" hidden>
+        <p role="status" id="form-status"></p>
+        <textarea
+          id="prepared-message"
+          readonly
+          aria-label={c.message}
+          rows="8"
+        ></textarea>
+        <div class="result-actions">
+          <a
+            id="email-link"
+            class="button button-navy"
+            href="mailto:info@med-link.org"
+          >
+            {c.open}
+            <Icon name="diagonal" size={16} />
+          </a>
+          <button type="button" class="button button-outline" id="copy-message">
+            {c.copy}
+          </button>
+        </div>
+      </div>
+      <noscript>
+        <p>
+          <a href="mailto:info@med-link.org">{c.direct} info@med-link.org</a>
+        </p>
+        <style>
+          form {
+            display: none;
+          }
+        </style>
+      </noscript>
+    </div>
+  </div>
+</section>

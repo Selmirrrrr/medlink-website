@@ -1,0 +1,25 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps } from "../types";
+interface Props extends PageProps {}
+import { url } from "../routes.mjs";
+const { t, lang } = Astro.props;
+---
+
+<section class="cta-section">
+  <div class="container cta-inner">
+    <div>
+      <span class="eyebrow">{t.common.next}</span>
+      <h2>
+        {t.cta.title}
+        <br />
+        <span>{t.cta.accent}</span>
+      </h2>
+      <p>{t.cta.text}</p>
+    </div>
+    <a class="button button-coral" href={`${url(lang, "contact")}#demo`}>
+      {t.cta.button}
+      <Icon size={20} />
+    </a>
+  </div>
+</section>

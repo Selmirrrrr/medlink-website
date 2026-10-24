@@ -1,0 +1,95 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps } from "../types";
+interface Props extends PageProps {}
+import { productIds, url, languageNames, languages } from "../routes.mjs";
+const { lang, page, t } = Astro.props;
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href={url(lang)}>
+          <img
+            src="/assets/medlink.svg"
+            alt="MedLink"
+            width="180"
+            height="43"
+          />
+        </a>
+        <p class="preserve-lines">{t.footer.tagline}</p>
+        <a
+          href="https://www.linkedin.com/company/medical-link-services/"
+          class="linkedin"
+          aria-label="Medical Link Services — LinkedIn"
+        >
+          in
+          <Icon name="diagonal" size={15} />
+        </a>
+      </div>
+      <div>
+        <h2>{t.nav.solutions}</h2>
+        <ul>
+          {productIds.map((id) => (
+            <li>
+              <a href={url(lang, id)}>{t.products[id].name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2>{t.footer.company}</h2>
+        <ul>
+          <li>
+            <a href={url(lang, "platform")}>{t.nav.platform}</a>
+          </li>
+          <li>
+            <a href={url(lang, "about")}>{t.nav.about}</a>
+          </li>
+          <li>
+            <a href={url(lang, "contact")}>{t.nav.contact}</a>
+          </li>
+          <li>
+            <a href={url(lang, "privacy")}>{t.footer.privacy}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h2>{t.footer.contact}</h2>
+        <a href="mailto:info@med-link.org">
+          info@med-link.org
+          <Icon name="diagonal" size={17} />
+        </a>
+        <a href="tel:+41223623400">
+          022 362 34 00 <small>FR</small>
+        </a>
+        <a href="tel:0800633546">
+          0800 633 546 <small>DE · CH</small>
+        </a>
+        <p>Nyon · Zürich · Sion</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} Medical Link Services SA</span>
+      <span class="footer-swiss">
+        <span class="swiss-cross" aria-hidden="true">
+          +
+        </span>
+        {t.footer.swiss}
+      </span>
+      <nav aria-label={t.nav.language}>
+        {languages.map((l) => (
+          <a
+            href={url(l, page === "404" ? "home" : page)}
+            aria-label={languageNames[l]}
+            lang={l}
+            aria-current={lang === l ? "true" : undefined}
+          >
+            {l.toUpperCase()}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,23 @@
+---
+import type { Content } from "../types";
+interface Props {
+  t: Content;
+  metric?: "visits" | "billed";
+}
+const { t, metric } = Astro.props;
+const stats = t.stats.map((stat, index) =>
+  index === 3 && metric ? t.activityStats[metric] : stat,
+);
+---
+
+<section class="stats-section" aria-label={t.common.figures}>
+  <div class="container stats-grid">
+    {stats.map(([value, label]) => (
+      <div class="stat">
+        <strong>{value}</strong>
+        <span>{label}</span>
+      </div>
+    ))}
+  </div>
+  <p class="stats-caption">{t.common.figures}</p>
+</section>

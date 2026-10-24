@@ -1,0 +1,106 @@
+---
+import Header from "../components/Header.astro";
+import type { Language, PageId, ProductId, Content } from "../types";
+interface Props {
+  lang?: Language;
+  page?: PageId | "404";
+}
+import Footer from "../components/Footer.astro";
+import { content } from "../content/index.mjs";
+import { url, languages } from "../routes.mjs";
+import "@fontsource-variable/inter";
+import "../styles/global.css";
+const { lang = "fr", page = "home" } = Astro.props;
+const t: Content = content[lang];
+const product = t.products[page as ProductId];
+const information = ["about", "platform", "contact", "event"].includes(page)
+  ? t[page as "about" | "platform" | "contact" | "event"]
+  : undefined;
+const title =
+  page === "home"
+    ? t.meta
+    : `${product?.name || information?.title || (page === "privacy" ? t.privacy.title : t.notFound.title)} — MedLink`;
+const description = product?.intro || information?.text || t.description;
+const canonical = new URL(
+  page === "404" ? "/404.html" : url(lang, page),
+  Astro.site,
+).href;
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Medical Link Services SA",
+  alternateName: "MedLink",
+  url: Astro.site!.href,
+  logo: new URL("/assets/medlink.svg", Astro.site).href,
+  email: "info@med-link.org",
+  telephone: "+41 22 362 34 00",
+  foundingDate: "2005",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Chemin de Chantavril 2",
+    postalCode: "1260",
+    addressLocality: "Nyon",
+    addressCountry: "CH",
+  },
+  sameAs: ["https://www.linkedin.com/company/medical-link-services/"],
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#133e57" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {page !== "404" && (
+      <>
+        {languages.map((l) => (
+          <link
+            rel="alternate"
+            hreflang={l}
+            href={new URL(url(l, page), Astro.site).href}
+          />
+        ))}
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={new URL(url("fr", page), Astro.site).href}
+        />
+      </>
+    )}
+    {page === "404" && <meta name="robots" content="noindex" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="MedLink" />
+    <meta
+      property="og:locale"
+      content={`${lang}_${lang === "en" ? "GB" : "CH"}`}
+    />
+    <meta
+      property="og:image"
+      content={new URL("/assets/social-card.png", Astro.site).href}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(schema).replace(/</g, "\\u003c")}
+    />
+  </head>
+  <body>
+    <Header lang={lang} page={page} t={t} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} page={page} t={t} />
+    <script>
+      import "../scripts/site.ts";
+    </script>
+  </body>
+</html>

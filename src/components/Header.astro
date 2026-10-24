@@ -1,0 +1,119 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps } from "../types";
+interface Props extends PageProps {}
+import {
+  languages,
+  languageNames,
+  productIds,
+  url,
+  themes,
+} from "../routes.mjs";
+const { lang, page, t } = Astro.props;
+---
+
+<a href="#main" class="skip-link">
+  {t.nav.skip}
+</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={url(lang)} aria-label={`MedLink — ${t.nav.home}`}>
+      <img src="/assets/medlink.svg" alt="MedLink" width="178" height="43" />
+    </a>
+    <button
+      class="mobile-toggle"
+      aria-label={t.nav.menu}
+      aria-expanded="false"
+      aria-controls="main-nav"
+      hidden
+    >
+      <Icon name="menu" />
+    </button>
+    <nav id="main-nav" class="main-nav" aria-label={t.nav.menu}>
+      <a
+        class="nav-link"
+        href={url(lang, "platform")}
+        aria-current={page === "platform" ? "page" : undefined}
+      >
+        {t.nav.platform}
+      </a>
+      <details class="solutions-menu">
+        <summary class="nav-link">
+          {t.nav.solutions}
+          <Icon name="chevron" size={14} />
+        </summary>
+        <div class="mega-menu">
+          <div class="mega-heading">
+            <span class="eyebrow">{t.solutions.eyebrow}</span>
+            <a href={`${url(lang)}#solutions`}>
+              {t.common.all}
+              <Icon size={17} />
+            </a>
+          </div>
+          <div class="mega-grid">
+            {productIds.map((id) => (
+              <a
+                href={url(lang, id)}
+                class="mega-link"
+                style={`--accent:${themes[id].color};--pale:${themes[id].pale}`}
+                aria-current={page === id ? "page" : undefined}
+              >
+                <span class="icon-tile">
+                  <Icon name={themes[id].icon} />
+                </span>
+                <span>
+                  <strong>{t.products[id].name}</strong>
+                  <small>{t.products[id].category}</small>
+                </span>
+                <Icon name="diagonal" size={16} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </details>
+      <a
+        class="nav-link"
+        href={url(lang, "about")}
+        aria-current={page === "about" ? "page" : undefined}
+      >
+        {t.nav.about}
+      </a>
+      <a
+        class="nav-link"
+        href={url(lang, "contact")}
+        aria-current={page === "contact" ? "page" : undefined}
+      >
+        {t.nav.contact}
+      </a>
+      <div class="nav-actions">
+        <details class="language-menu">
+          <summary aria-label={`${t.nav.language} — ${languageNames[lang]}`}>
+            <Icon name="globe" size={17} />
+            <span>{lang.toUpperCase()}</span>
+            <Icon name="chevron" size={12} />
+          </summary>
+          <div class="language-options">
+            {languages.map((l) => (
+              <a
+                href={url(l, page === "404" ? "home" : page)}
+                lang={l}
+                hreflang={l}
+                aria-current={l === lang ? "true" : undefined}
+              >
+                <span>{languageNames[l]}</span>
+                <span>{l === lang ? "✓" : l.toUpperCase()}</span>
+              </a>
+            ))}
+          </div>
+        </details>
+        <a
+          class="button button-small button-navy"
+          href={`${url(lang, "contact")}#demo`}
+        >
+          {t.nav.demo}
+          <Icon size={16} />
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>

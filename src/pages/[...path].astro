@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type { Language, PageId, ProductId } from "../types";
+interface Props {
+  lang: Language;
+  page: PageId;
+}
+import Home from "../components/Home.astro";
+import Product from "../components/Product.astro";
+import Information from "../components/Information.astro";
+import Contact from "../components/Contact.astro";
+import { content } from "../content/index.mjs";
+import { languages, routes, productIds, url } from "../routes.mjs";
+export function getStaticPaths() {
+  return languages.flatMap((lang) =>
+    Object.keys(routes[lang]).map((page) => ({
+      params: { path: url(lang, page).slice(1, -1) || undefined },
+      props: { lang, page },
+    })),
+  );
+}
+const { lang, page } = Astro.props;
+const t = content[lang];
+---
+
+<Layout lang={lang} page={page}>
+  {page === "home" && <Home t={t} lang={lang} />}
+  {productIds.includes(page as ProductId) && (
+    <Product t={t} lang={lang} page={page as ProductId} />
+  )}
+  {["about", "platform"].includes(page) && (
+    <Information t={t} lang={lang} page={page as "about" | "platform"} />
+  )}
+  {page === "contact" && <Contact t={t} lang={lang} />}
+  {page === "event" && (
+    <section class="section legal-page">
+      <div class="container narrow">
+        <span class="eyebrow">{t.event.eyebrow}</span>
+        <h1>{t.event.title}</h1>
+        <p class="lead">{t.event.text}</p>
+        <section>
+          <h2>{t.event.location}</h2>
+          <p>{t.event.date}</p>
+          <p>Route des Gouttes-d’Or 2, 2000 Neuchâtel</p>
+        </section>
+        <section>
+          <p>{t.event.body}</p>
+        </section>
+        <section>
+          <h2>{t.event.closed}</h2>
+          <a class="text-link" href={url(lang, "contact")}>
+            {t.event.contact} →
+          </a>
+        </section>
+      </div>
+    </section>
+  )}
+  {page === "privacy" && (
+    <section class="section legal-page">
+      <div class="container narrow">
+        <span class="eyebrow">Medical Link Services SA</span>
+        <h1>{t.privacy.title}</h1>
+        <p class="lead">{t.privacy.intro}</p>
+        {t.privacy.sections.map(([title, text]) => (
+          <section>
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </section>
+        ))}
+      </div>
+    </section>
+  )}
+</Layout>

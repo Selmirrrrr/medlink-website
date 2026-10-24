@@ -1,0 +1,196 @@
+---
+import Icon from "./Icon.astro";
+import type { PageProps } from "../types";
+interface Props extends PageProps {}
+import Visual from "./Visual.astro";
+import Stats from "./Stats.astro";
+import SolutionCards from "./SolutionCards.astro";
+import CTA from "./CTA.astro";
+import { url } from "../routes.mjs";
+const { t, lang } = Astro.props;
+const partners = [
+  ["ofac.svg", "Ofac", "https://www.ofac.ch/"],
+  ["sasis.png", "SASIS", "https://www.sasis.ch/"],
+  ["hci.svg", "HCI Solutions", "https://www.hcisolutions.ch/"],
+  ["medidata.svg", "MediData", "https://www.medidata.ch/"],
+  ["hin.png", "HIN", "https://www.hin.ch/"],
+  ["post.jpg", "La Poste", "https://www.post.ch/"],
+];
+---
+
+<section class="home-hero">
+  <div class="hero-orbit orbit-one" aria-hidden="true"></div>
+  <div class="hero-orbit orbit-two" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow hero-eyebrow">
+        <span class="swiss-cross" aria-hidden="true">
+          +
+        </span>
+        {t.hero.eyebrow}
+      </span>
+      <h1>
+        {t.hero.title}
+        <br />
+        <span>{t.hero.accent}</span>
+      </h1>
+      <p>{t.hero.text}</p>
+      <div class="hero-actions">
+        <a href={`${url(lang, "contact")}#demo`} class="button button-coral">
+          {t.nav.demo}
+          <Icon size={19} />
+        </a>
+        <a class="hero-secondary" href="#solutions">
+          {t.hero.cta}
+          <Icon name="diagonal" size={18} />
+        </a>
+      </div>
+      <div class="hero-trust">
+        {t.hero.trust.map((label, i) => (
+          <span>
+            <Icon name={i === 0 ? "shield" : "check"} size={16} />
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
+    <Visual t={t} />
+  </div>
+  <div class="container hero-baseline">
+    <span>
+      <span class="green-dot"></span>
+      {t.hero.note}
+    </span>
+    <a href="#solutions" aria-label={t.hero.cta}>
+      <span>01 — 06</span>
+      <Icon name="arrow" size={16} />
+    </a>
+  </div>
+</section>
+<Stats t={t} />
+<SolutionCards t={t} lang={lang} />
+<section class="why-section section">
+  <div class="container why-grid">
+    <div>
+      <span class="eyebrow">{t.why.eyebrow}</span>
+      <h2 class="preserve-lines">{t.why.title}</h2>
+      <p>{t.why.text}</p>
+      <a class="text-link" href={url(lang, "platform")}>
+        {t.common.read}
+        <Icon size={19} />
+      </a>
+      <div class="connection-art" aria-hidden="true">
+        <div class="connection-center">MedLink</div>
+        {["heart", "calendar", "users", "wallet"].map((icon, i) => (
+          <span class={`connection-node node-${i}`}>
+            <Icon name={icon} size={25} />
+          </span>
+        ))}
+        <div class="connection-ring"></div>
+      </div>
+    </div>
+    <div class="why-list">
+      {t.why.items.map(([title, text], i) => (
+        <article>
+          <span class="why-number">0{i + 1}</span>
+          <div>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+          <Icon name={["link", "spark", "users"][i]} size={23} />
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<section
+  class="scribe-feature section"
+  style="--accent:#7350df;--pale:#f1edff;--accent-light:#c9b5ff"
+>
+  <div class="container scribe-feature-grid">
+    <div>
+      <span class="eyebrow">
+        <span class="new-dot"></span>
+        {t.scribeFeature.eyebrow}
+      </span>
+      <h2 class="preserve-lines">{t.scribeFeature.title}</h2>
+      <p>{t.scribeFeature.text}</p>
+      <a href={url(lang, "scribe")} class="button button-purple">
+        {t.scribeFeature.link}
+        <Icon size={18} />
+      </a>
+      <div class="scribe-tags">
+        {t.scribeFeature.tags.map((tag) => (
+          <span>
+            <Icon name="check" size={15} />
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+    <div>
+      <Visual t={t} type="scribe" />
+      <p class="example-caption">{t.common.example}</p>
+    </div>
+  </div>
+</section>
+<section class="swiss-section section">
+  <div class="container swiss-grid">
+    <div class="swiss-image">
+      <img
+        src="/assets/nyon.webp"
+        alt={t.swiss.photo}
+        loading="lazy"
+        width="1000"
+        height="665"
+      />
+      <div class="swiss-image-caption">
+        <span class="swiss-cross" aria-hidden="true">
+          +
+        </span>
+        <span>
+          Medical Link Services<small>Nyon · Zürich · Sion</small>
+        </span>
+        <span class="since">
+          2005<span>— {new Date().getFullYear()}</span>
+        </span>
+      </div>
+    </div>
+    <div class="swiss-copy">
+      <span class="eyebrow">{t.swiss.eyebrow}</span>
+      <h2 class="preserve-lines">{t.swiss.title}</h2>
+      <p>{t.swiss.text}</p>
+      <ul class="check-list">
+        {t.swiss.tags.map((tag) => (
+          <li>
+            <Icon name="check" size={18} />
+            {tag}
+          </li>
+        ))}
+      </ul>
+      <a href={url(lang, "about")} class="text-link">
+        {t.swiss.link}
+        <Icon size={19} />
+      </a>
+    </div>
+  </div>
+</section>
+<section class="partners-section">
+  <div class="container">
+    <h2>{t.partners}</h2>
+    <div class="partners-grid">
+      {partners.map(([file, name, href]) => (
+        <a href={href}>
+          <img
+            src={`/assets/${file}`}
+            alt={name}
+            loading="lazy"
+            width="140"
+            height="50"
+          />
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+<CTA t={t} lang={lang} />
