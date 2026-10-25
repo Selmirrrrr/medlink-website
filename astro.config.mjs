@@ -5,6 +5,9 @@ export default defineConfig({
   output: "static",
   trailingSlash: "always",
   build: { format: "directory" },
-  server: { port: 4321, allowedHosts: ["mls.bizy.ch"] },
+  server: {
+    port: 4321,
+    allowedHosts: ["mls.bizy.ch", "devbox.tail9514f6.ts.net"],
+  },
   devToolbar: { enabled: false },
 });
