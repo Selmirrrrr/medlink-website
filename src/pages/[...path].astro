@@ -10,11 +10,11 @@ import Product from "../components/Product.astro";
 import Information from "../components/Information.astro";
 import Contact from "../components/Contact.astro";
 import { content } from "../content/index.mjs";
-import { languages, routes, productIds, url } from "../routes.mjs";
+import { languages, routes, productIds, url, pathname } from "../routes.mjs";
 export function getStaticPaths() {
   return languages.flatMap((lang) =>
     Object.keys(routes[lang]).map((page) => ({
-      params: { path: url(lang, page).slice(1, -1) || undefined },
+      params: { path: pathname(lang, page).slice(1, -1) || undefined },
       props: { lang, page },
     })),
   );

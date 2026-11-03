@@ -7,7 +7,7 @@ interface Props {
 }
 import Footer from "../components/Footer.astro";
 import { content } from "../content/index.mjs";
-import { url, languages } from "../routes.mjs";
+import { url, asset, languages } from "../routes.mjs";
 import "@fontsource-variable/inter";
 import "../styles/global.css";
 const { lang = "fr", page = "home" } = Astro.props;
@@ -22,7 +22,7 @@ const title =
     : `${product?.name || information?.title || (page === "privacy" ? t.privacy.title : t.notFound.title)} — MedLink`;
 const description = product?.intro || information?.text || t.description;
 const canonical = new URL(
-  page === "404" ? "/404.html" : url(lang, page),
+  page === "404" ? asset("404.html") : url(lang, page),
   Astro.site,
 ).href;
 const schema = {
@@ -31,7 +31,7 @@ const schema = {
   name: "Medical Link Services SA",
   alternateName: "MedLink",
   url: Astro.site!.href,
-  logo: new URL("/assets/medlink.svg", Astro.site).href,
+  logo: new URL(asset("assets/medlink.svg"), Astro.site).href,
   email: "info@med-link.org",
   telephone: "+41 22 362 34 00",
   foundingDate: "2005",
@@ -73,7 +73,7 @@ const schema = {
       </>
     )}
     {page === "404" && <meta name="robots" content="noindex" />}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={asset("favicon.svg")} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -85,7 +85,7 @@ const schema = {
     />
     <meta
       property="og:image"
-      content={new URL("/assets/social-card.png", Astro.site).href}
+      content={new URL(asset("assets/social-card.png"), Astro.site).href}
     />
     <meta name="twitter:card" content="summary_large_image" />
     <script

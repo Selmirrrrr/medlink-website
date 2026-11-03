@@ -6,7 +6,7 @@ import Visual from "./Visual.astro";
 import Stats from "./Stats.astro";
 import SolutionCards from "./SolutionCards.astro";
 import CTA from "./CTA.astro";
-import { url } from "../routes.mjs";
+import { url, asset } from "../routes.mjs";
 const { t, lang } = Astro.props;
 const partners = [
   ["ofac.svg", "Ofac", "https://www.ofac.ch/"],
@@ -138,7 +138,7 @@ const partners = [
   <div class="container swiss-grid">
     <div class="swiss-image">
       <img
-        src="/assets/nyon.webp"
+        src={asset("assets/nyon.webp")}
         alt={t.swiss.photo}
         loading="lazy"
         width="1000"
@@ -182,7 +182,7 @@ const partners = [
       {partners.map(([file, name, href]) => (
         <a href={href}>
           <img
-            src={`/assets/${file}`}
+            src={asset(`assets/${file}`)}
             alt={name}
             loading="lazy"
             width="140"

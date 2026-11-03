@@ -8,7 +8,7 @@ import Visual from "./Visual.astro";
 import Stats from "./Stats.astro";
 import SolutionCards from "./SolutionCards.astro";
 import CTA from "./CTA.astro";
-import { url } from "../routes.mjs";
+import { url, asset } from "../routes.mjs";
 const { t, lang, page } = Astro.props;
 const p = t[page];
 ---
@@ -35,7 +35,7 @@ const p = t[page];
       <div class="container about-grid">
         <div class="about-photo">
           <img
-            src="/assets/nyon.webp"
+            src={asset("assets/nyon.webp")}
             alt={t.swiss.photo}
             width="1000"
             height="665"

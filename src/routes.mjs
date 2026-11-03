@@ -73,10 +73,18 @@ export const routes = {
     event: "event",
   },
 };
-export function url(lang, page = "home") {
+// Astro's `base` (e.g. "/medlink-website/" on GitHub Pages); "/" outside Vite, such as in tests.
+export const base = (import.meta.env?.BASE_URL ?? "/").replace(/\/?$/, "/");
+export function pathname(lang, page = "home") {
   if (!routes[lang] || !(page in routes[lang]))
     throw new Error(`Unknown route ${lang}/${page}`);
   return `${lang === "fr" ? "/" : `/${lang}/`}${routes[lang][page] ? `${routes[lang][page]}/` : ""}`;
+}
+export function url(lang, page = "home") {
+  return base + pathname(lang, page).slice(1);
+}
+export function asset(file) {
+  return base + file;
 }
 export const themes = {
   care: { color: "#c63c6b", light: "#f5aac6", pale: "#fbedf3", icon: "heart" },

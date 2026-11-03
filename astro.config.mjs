@@ -1,7 +1,9 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://www.med-link.org",
+  // GitHub Pages builds override these (see .github/workflows/pages.yml).
+  site: process.env.SITE_URL ?? "https://www.med-link.org",
+  base: process.env.BASE_PATH ?? "/",
   output: "static",
   trailingSlash: "always",
   build: { format: "directory" },

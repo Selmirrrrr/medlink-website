@@ -7,6 +7,7 @@ import {
   languageNames,
   productIds,
   url,
+  asset,
   themes,
 } from "../routes.mjs";
 const { lang, page, t } = Astro.props;
@@ -18,7 +19,7 @@ const { lang, page, t } = Astro.props;
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href={url(lang)} aria-label={`MedLink — ${t.nav.home}`}>
-      <img src="/assets/medlink.svg" alt="MedLink" width="178" height="43" />
+      <img src={asset("assets/medlink.svg")} alt="MedLink" width="178" height="43" />
     </a>
     <button
       class="mobile-toggle"

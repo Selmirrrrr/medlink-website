@@ -2,7 +2,7 @@
 import Icon from "./Icon.astro";
 import type { PageProps } from "../types";
 interface Props extends PageProps {}
-import { productIds, url, languageNames, languages } from "../routes.mjs";
+import { productIds, url, asset, languageNames, languages } from "../routes.mjs";
 const { lang, page, t } = Astro.props;
 ---
 
@@ -12,7 +12,7 @@ const { lang, page, t } = Astro.props;
       <div class="footer-brand">
         <a href={url(lang)}>
           <img
-            src="/assets/medlink.svg"
+            src={asset("assets/medlink.svg")}
             alt="MedLink"
             width="180"
             height="43"
